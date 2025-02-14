@@ -13,6 +13,7 @@ Route::get('/dashboard', function () {
     // return Message::get();
     // return auth()->user()->id;
     // Message::truncate();
+
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 

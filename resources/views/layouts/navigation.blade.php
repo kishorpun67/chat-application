@@ -54,13 +54,19 @@ class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
                                 <!-- User Avatar -->
                                 <img src="{{asset('image/face28.jpg')}}" alt="User Avatar" class="w-7 h-7 rounded-full" >
                                 <!-- Message Info -->
-                                <div class="flex-1">
+                                <div class="flex-1 overflow-hidden whitespace-nowrap">
                                     <h4 class="text-gray-900 dark:text-gray-200 font-semibold flex items-center">
                                         {{$user->name}} 
                                         <!-- Chat Count Badge -->
                                         <span class="ml-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{$unreadCount}}</span>
                                     </h4>
-                                    <p class="text-gray-600 dark:text-gray-400 text-sm truncate ">Hey! How are you? Let’s catch up soon.</p>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm truncate " id="preMessage-{{$user->id}}">
+                                        @if (!empty(latestMessage($user->id)))
+                                            {{latestMessage($user->id)}}
+                                        @endif
+                                    </p>
+                                    
+                                                                    
                                 </div>
                             </div>  
                         @endforeach
