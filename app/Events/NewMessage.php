@@ -42,7 +42,8 @@ class NewMessage implements ShouldBroadcastNow
         return [
             'message' => $this->message->message,
             'sender_id' => $this->message->sender_id,
-            'receiver_id' => $this->message->receiver_id
+            'receiver_id' => $this->message->receiver_id,
+            'date' =>$this->message->date
         ];
     }
 }

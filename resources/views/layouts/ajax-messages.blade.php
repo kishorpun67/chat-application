@@ -1,28 +1,29 @@
-<?php 
-   
-?>
+
 @if(isset($messages))
+    <h3 class=" text-gray-900  bg-green-100 p-4 font-bold flex items-center justify-center">
+        {{$user->name}} 
+    </h3>  
         <!-- Chat Messages Container -->
-        <div class="flex-1 overflow-y-auto mb-4 space-y-4" id="showMessage">
+        <div class="flex-1 p-4 overflow-y-auto mb-4 space-y-4" id="showMessage">
 
             @foreach ($messages as $message)
             @if ($message->sender_id == auth()->user()->id)
                 <!-- Sent Message (Right) -->
 
-                <div class="flex justify-end" style="margin-block: 1rem;">
-                    <div class="max-w-[70%] bg-blue-700 text-white rounded-lg p-5" >
+                <div class="flex justify-end my-1" >
+                    <div class="max-w-[70%] bg-blue-700  text-white rounded-lg p-2" >
                         <p>{{$message->message}}</p>
-                        {{-- <span class="text-xs text-blue-200 mt-1 block">10:31 AM</span> --}}
+                        <span class="text-xs text-blue-200  block">{{ $message->created_at->diffForHumans() }}</span>
                     </div>
                 </div>
             @else
                         <!-- Incoming Message (Left) -->
             <div class="flex justify-start my-1">
-                <div class="max-w-[70%] bg-white dark:bg-gray-700 rounded-lg p-5">
+                <div class="max-w-[70%] bg-white dark:bg-gray-700 rounded-lg p-2">
                     <p class="text-gray-800 dark:text-gray-200">
                         {{$message->message}}
                     </p>
-                    {{-- <span class="text-xs text-gray-500 dark:text-gray-400 mt-1 block">10:30 AM</span> --}}
+                    <span class="text-xs text-gray-500 dark:text-gray-400  block">{{ $message->created_at->diffForHumans() }}</span>
                 </div>
             </div>
 
@@ -33,7 +34,7 @@
 
         <!-- Message Input Area -->
         <div class="mt-auto">
-            <div class="flex items-center space-x-2">
+            <div class="flex items-center space-x-2 px-4">
                 <input 
                     type="text" 
                     id="message"

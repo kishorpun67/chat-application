@@ -12,6 +12,6 @@
         })
         ->orderBy('created_at', 'desc') // Order messages by latest
         ->first();  // Get the latest message
-        return $messages->message;
+        return $messages->message ?? '';
     }
 ?>

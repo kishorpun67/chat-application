@@ -37,7 +37,18 @@
 
 <!-- jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- JavaScript for Show/Remove -->
+<script>
+    function toggleMessages() {
+        let dropdown = document.getElementById("messagesDropdown");
+        dropdown.classList.toggle("hidden");
+    }
 
+    function removeMessages() {
+        let dropdown = document.getElementById("messagesDropdown");
+        dropdown.classList.add("hidden");
+    }
+</script>
 <script>
     $(document).ready(function () {
         
@@ -73,7 +84,8 @@
         $(document).on('click', '.send-message', function () {
             // let receiver_id = $("#receiver_id").val();
             let message = $("#message").val();
-
+            
+            $("#message").val(" ");
             console.log("Sending message to:", receiver_id, "Message:", message); // Debugging
 
             $.ajax({
@@ -88,25 +100,29 @@
                 },
                 success: function (response) {
                     console.log("Message Sent:", response); // Debugging
-
                     if (response.auth_id == response.message.sender_id) {
                         $("#showMessage").append(`
                             <div class="flex justify-end my-1">
-                                <div class="max-w-[70%] bg-blue-700 text-white rounded-lg p-5">
+                                <div class="max-w-[70%] bg-blue-700 text-white rounded-lg p-2">
                                     <p>${response.message.message}</p>
+                                    <span class="text-xs text-blue-200  block">${response.message.date}</span>
                                 </div>
                             </div>`
                         );
+                        (`#preMessage-${auth_id}`).text(response.message.message)
                     } else {
                         $("#showMessage").append(`
                             <div class="flex justify-start my-1">
-                                <div class="max-w-[70%] bg-white dark:bg-gray-700 rounded-lg p-5">
+                                <div class="max-w-[70%] bg-white dark:bg-gray-700 rounded-lg p-2">
                                     <p class="text-gray-800 dark:text-gray-200">
                                         ${response.message.message}
                                     </p>
+                                    <span class="text-xs text-blue-200  block">${response.message.date}</span>
                                 </div>
                             </div>`
                         );
+                        (`#preMessage-${auth_id}`).text(response.message.message)
+
                     }
                 },
                 error: function (xhr, status, error) {
@@ -120,26 +136,31 @@
 
         window.Echo.private(`chat-channel.${auth_id}`)
             .listen('NewMessage', (data) => {
-                console.log("New Message Event Received:", data); // Debugging
-
+                console.log(data)
                 if (auth_id == data.sender_id) {
                     $("#showMessage").append(`
                         <div class="flex justify-end my-1">
-                            <div class="max-w-[70%] bg-blue-700 text-white rounded-lg p-5">
+                            <div class="max-w-[70%] bg-blue-700 text-white rounded-lg p-2">
                                 <p>${data.message}</p>
+                                    <span class="text-xs text-blue-200  block">${data.date}</span>
                             </div>
                         </div>`
                     );
+                    (`#preMessage-${auth_id}`).text(data.message)
+
                 } else {
                     $("#showMessage").append(`
                         <div class="flex justify-start my-1">
-                            <div class="max-w-[70%] bg-white dark:bg-gray-700 rounded-lg p-5">
+                            <div class="max-w-[70%] bg-white dark:bg-gray-700 rounded-lg p-2">
                                 <p class="text-gray-800 dark:text-gray-200">
                                     ${data.message}
                                 </p>
+                                <span class="text-xs text-blue-200  block">${data.date}</span>
                             </div>
                         </div>`
                     );
+                    (`#preMessage-${auth_id}`).text(data.message)
+
                 }
             });
     });

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Models\Message;
 use App\Http\Controllers\MessageController;
+use Auth;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -13,7 +14,8 @@ Route::get('/dashboard', function () {
     // return Message::get();
     // return auth()->user()->id;
     // Message::truncate();
-
+    User::where('id', auth()->user()->id)->update(['last_seen' => now()]);
+    // return auth()->user();
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 

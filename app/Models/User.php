@@ -47,6 +47,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
+    public function isOnline(){
+    
+        if(!empty($this->last_seen)) {
+            $time =$this->updated_at->diffInMinutes(now());
+            if($time<5) {
+                return true;
+            }
+        }
+        return false;
+    }    
    
 }
