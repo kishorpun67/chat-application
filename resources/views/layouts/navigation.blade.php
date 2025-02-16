@@ -67,7 +67,7 @@
                             </div>
 
                             <!-- Message Display Section -->
-                            <div id="viewMessages" class="w-3/5  bg-gray-100 dark:bg-gray-800 rounded-r-lg my-4 flex flex-col">
+                            <div id="viewMessages" class="w-3/5  bg-gray-100 dark:bg-gray-800 rounded-r-lg  flex flex-col">
                                 @include('layouts.ajax-messages')
                             </div>
                         </div>
