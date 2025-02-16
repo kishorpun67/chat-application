@@ -33,7 +33,7 @@
     
 
         <!-- Message Input Area -->
-        <div class="mt-auto">
+        <div class="mt-auto mb-4">
             <div class="flex items-center space-x-2 px-4">
                 <input 
                     type="text" 
