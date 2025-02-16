@@ -84,52 +84,56 @@
         $(document).on('click', '.send-message', function () {
             // let receiver_id = $("#receiver_id").val();
             let message = $("#message").val();
-            
-            $("#message").val(" ");
-            console.log("Sending message to:", receiver_id, "Message:", message); // Debugging
+            if(message){
+                $("#message").val(" ");
+                console.log("Sending message to:", receiver_id, "Message:", message); // Debugging
 
-            $.ajax({
-                method: 'POST',
-                url: '/send/message',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: {
-                    receiver_id: receiver_id,
-                    message: message
-                },
-                success: function (response) {
-                    console.log("Message Sent:", response); // Debugging
-                    if (response.auth_id == response.message.sender_id) {
-                        $("#showMessage").append(`
-                            <div class="flex justify-end my-1">
-                                <div class="max-w-[70%] bg-blue-700 text-white rounded-lg p-2">
-                                    <p>${response.message.message}</p>
-                                    <span class="text-xs text-blue-200  block">${response.message.date}</span>
-                                </div>
-                            </div>`
-                        );
-                        (`#preMessage-${auth_id}`).text(response.message.message)
-                    } else {
-                        $("#showMessage").append(`
-                            <div class="flex justify-start my-1">
-                                <div class="max-w-[70%] bg-white dark:bg-gray-700 rounded-lg p-2">
-                                    <p class="text-gray-800 dark:text-gray-200">
-                                        ${response.message.message}
-                                    </p>
-                                    <span class="text-xs text-blue-200  block">${response.message.date}</span>
-                                </div>
-                            </div>`
-                        );
-                        (`#preMessage-${auth_id}`).text(response.message.message)
+                $.ajax({
+                    method: 'POST',
+                    url: '/send/message',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        receiver_id: receiver_id,
+                        message: message
+                    },
+                    success: function (response) {
+                        console.log("Message Sent:", response); // Debugging
+                        if (response.auth_id == response.message.sender_id) {
+                            $("#showMessage").append(`
+                                <div class="flex justify-end my-1">
+                                    <div class="max-w-[70%] bg-blue-700 text-white rounded-lg p-2">
+                                        <p>${response.message.message}</p>
+                                        <span class="text-xs text-blue-200  block">${response.message.date}</span>
+                                    </div>
+                                </div>`
+                            );
+                            (`#preMessage-${auth_id}`).text(response.message.message)
+                        } else {
+                            $("#showMessage").append(`
+                                <div class="flex justify-start my-1">
+                                    <div class="max-w-[70%] bg-white dark:bg-gray-700 rounded-lg p-2">
+                                        <p class="text-gray-800 dark:text-gray-200">
+                                            ${response.message.message}
+                                        </p>
+                                        <span class="text-xs text-blue-200  block">${response.message.date}</span>
+                                    </div>
+                                </div>`
+                            );
+                            (`#preMessage-${auth_id}`).text(response.message.message)
 
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error:", error); // Debugging
+                        alert("Error sending message!");
                     }
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error:", error); // Debugging
-                    alert("Error sending message!");
-                }
-            });
+                });
+            } else{
+                alert('Enter Message')
+            }
+            
         });
 
         // Listening for New Messages
