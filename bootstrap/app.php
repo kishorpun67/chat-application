@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\UpdateLastSeen;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,10 +13,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Aliases
-        $middleware->append([
-            \App\Http\Middleware\UpdateLastSeen::class, // Your custom middleware
-        ]);    
+        $middleware->alias([
+            'last.seen'=>UpdateLastSeen::class
+        ]);          
+        
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

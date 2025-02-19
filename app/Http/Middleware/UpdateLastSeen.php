@@ -17,7 +17,7 @@ class UpdateLastSeen
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check()) {
-
+            return redirect('/login');
             User::where('id', auth()->user()->id)->update(['last_seen' => now()]);
             
         }

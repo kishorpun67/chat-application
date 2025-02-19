@@ -48,8 +48,42 @@
         let dropdown = document.getElementById("messagesDropdown");
         dropdown.classList.add("hidden");
     }
+    function toggleChatSize() {
+        let messagesContainer = document.getElementById("messagesContainer");
+        let toggleBtn = document.getElementById("toggleChatSizeBtn");
+
+        if (messagesContainer.style.height === "0px") {
+            // Maximize
+            messagesContainer.style.height = "400px";
+            // messagesContainer.style.display = "inline";
+
+            toggleBtn.textContent = "🔽"; // Down arrow
+        } else {
+            // Minimize
+            messagesContainer.style.height = "0px";
+            // messagesContainer.style.display = "non";
+            toggleBtn.textContent = "🔼"; // Up arrow
+        }
+    }
+
 </script>
 <script>
+    function scrollToBottom() {
+        let chatContainer = document.getElementById("showMessage");
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    // Scroll to the bottom on page load
+    document.addEventListener("DOMContentLoaded", function () {
+        scrollToBottom();
+    });
+
+    // Scroll when a new message is received
+    function appendMessage(html) {
+        $("#showMessage").append(html);
+        scrollToBottom();
+    }
+
     $(document).ready(function () {
         
         var receiver_id;
@@ -100,30 +134,53 @@
                     },
                     success: function (response) {
                         console.log("Message Sent:", response); // Debugging
+                        // if (response.auth_id == response.message.sender_id) {
+                        //     $("#showMessage").append(`
+                        //         <div class="flex justify-end my-1">
+                        //             <div class="max-w-[70%] bg-blue-700 text-white rounded-lg p-2">
+                        //                 <p>${response.message.message}</p>
+                        //                 <span class="text-xs text-blue-200  block">${response.message.date}</span>
+                        //             </div>
+                        //         </div>`
+                        //     );
+                        //     (`#preMessage-${auth_id}`).text(response.message.message)
+                        // } else {
+                        //     $("#showMessage").append(`
+                        //         <div class="flex justify-start my-1">
+                        //             <div class="max-w-[70%] bg-white dark:bg-gray-700 rounded-lg p-2">
+                        //                 <p class="text-gray-800 dark:text-gray-200">
+                        //                     ${response.message.message}
+                        //                 </p>
+                        //                 <span class="text-xs text-blue-200  block">${response.message.date}</span>
+                        //             </div>
+                        //         </div>`
+                        //     );
+                        //     (`#preMessage-${auth_id}`).text(response.message.message)
+
+                        // }
+                        let messageHtml;
+        
                         if (response.auth_id == response.message.sender_id) {
-                            $("#showMessage").append(`
+                            messageHtml = `
                                 <div class="flex justify-end my-1">
                                     <div class="max-w-[70%] bg-blue-700 text-white rounded-lg p-2">
                                         <p>${response.message.message}</p>
-                                        <span class="text-xs text-blue-200  block">${response.message.date}</span>
+                                        <span class="text-xs text-blue-200 block">${response.message.date}</span>
                                     </div>
-                                </div>`
-                            );
-                            (`#preMessage-${auth_id}`).text(response.message.message)
+                                </div>
+                            `;
                         } else {
-                            $("#showMessage").append(`
+                            messageHtml = `
                                 <div class="flex justify-start my-1">
                                     <div class="max-w-[70%] bg-white dark:bg-gray-700 rounded-lg p-2">
-                                        <p class="text-gray-800 dark:text-gray-200">
-                                            ${response.message.message}
-                                        </p>
-                                        <span class="text-xs text-blue-200  block">${response.message.date}</span>
+                                        <p class="text-gray-800 dark:text-gray-200">${response.message.message}</p>
+                                        <span class="text-xs text-gray-500 dark:text-gray-400 block">${response.message.date}</span>
                                     </div>
-                                </div>`
-                            );
-                            (`#preMessage-${auth_id}`).text(response.message.message)
-
+                                </div>
+                            `;
                         }
+
+                        appendMessage(messageHtml);
                     },
                     error: function (xhr, status, error) {
                         console.error("Error:", error); // Debugging
@@ -150,7 +207,7 @@
                             </div>
                         </div>`
                     );
-                    (`#preMessage-${auth_id}`).text(data.message)
+                    // (`#preMessage-${auth_id}`).text(data.message)
 
                 } else {
                     $("#showMessage").append(`
@@ -163,7 +220,7 @@
                             </div>
                         </div>`
                     );
-                    (`#preMessage-${auth_id}`).text(data.message)
+                    // (`#preMessage-${auth_id}`).text(data.message)
 
                 }
             });

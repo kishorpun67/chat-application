@@ -35,33 +35,53 @@
                     </button>
 
                     <!-- Messages Dropdown -->
-                    <div id="messagesDropdown" class="absolute hidden display right-1 mt-8  flex flex-col w-[800px] bg-white dark:bg-gray-700 shadow-lg rounded-lg border border-gray-300 dark:border-gray-600">
+                    <div id="messagesDropdown" class="absolute hidden display right-1 mt-8  flex flex-col w-[500px] bg-white dark:bg-gray-700 shadow-lg rounded-lg border border-gray-300 dark:border-gray-600">
                         <!-- Header with Remove Button -->
                         <div class="flex  justify-between items-center px-6 py-2 bg-gray-200 dark:bg-gray-800 rounded-t-lg">
                             <h3 class="text-gray-800 dark:text-gray-200 font-semibold">Messages</h3>
-                            <button onclick="removeMessages()" class="text-red-500 hover:text-red-700 dark:hover:text-red-400">
-                                ❌ Remove
-                            </button>
+                                
+                            <div class="flex space-x-3">
+                                <!-- Minimize/Maximize Button -->
+                                <button onclick="toggleChatSize()" id="toggleChatSizeBtn" class="text-blue-500 hover:text-blue-700 dark:hover:text-blue-400">
+                                    🔽
+                                </button>
+
+                                <!-- Remove (Close) Button -->
+                                <button onclick="removeMessages()" class="text-red-500 hover:text-red-700 dark:hover:text-red-400">
+                                    ❌
+                                </button>
+                            </div>
                         </div>
 
-                        <div class="flex h-[600px]">
+                        <div id="messagesContainer" class="flex h-[400px]">
                             <!-- Messages List -->
-                            <div class="w-2/5 px-6 border-r border-gray-300 dark:border-gray-600 ">
-                                {{-- <hr class="border-t border-gray-300"> --}}
+                            <div class="w-2/5] px-6 border-r border-gray-300 dark:border-gray-600">
                                 <div class="my-2"></div>
                                 @foreach ($users as $user)
-                                    <div class="flex items-center space-x-3 p-2  cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg get-user" user-id={{$user->id}}>
+                                <?php 
+                                    $undreadMessageCount = Message::where('sender_id',$user->id)->where('read',0)->count();
+                                ?>
+                                    <div class="flex items-center space-x-3 p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg get-user" user-id="{{$user->id}}">
                                         <img src="{{ asset('image/face28.jpg') }}" alt="User Avatar" class="w-7 h-7 rounded-full">
+                                        
                                         @if($user->isOnline())
-                                            <span class="text-success">🟢 </span>
+                                            <span class="text-success">🟢</span>
                                         @else
                                             <span class="text-muted"></span>
                                         @endif
+                                        
                                         <div class="flex-1 overflow-hidden whitespace-nowrap">
                                             <h4 class="text-gray-900 dark:text-gray-200 font-semibold flex items-center">
                                                 {{ $user->name }}
                                             </h4>
                                         </div>
+                            
+                                        <!-- Unread Message Count Badge -->
+                                        @if($undreadMessageCount > 0)
+                                            <span class="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                                                {{ $undreadMessageCount }}
+                                            </span>
+                                        @endif
                                     </div>  
                                 @endforeach
                             </div>
