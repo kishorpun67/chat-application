@@ -63,6 +63,8 @@
             messagesContainer.style.height = "0px";
             // messagesContainer.style.display = "non";
             toggleBtn.textContent = "🔼"; // Up arrow
+            messagesContainer.style.overflow ="hidden";
+
         }
     }
 

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Models\Message;
 use App\Http\Controllers\MessageController;
-use Auth;
+
 Route::get('/', function () {
     return view('welcome');
 });

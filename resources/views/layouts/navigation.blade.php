@@ -55,7 +55,7 @@
 
                         <div id="messagesContainer" class="flex h-[400px]">
                             <!-- Messages List -->
-                            <div class="w-2/5] px-6 border-r border-gray-300 dark:border-gray-600">
+                            <div class="w-2/5 px-6 border-r border-gray-300 dark:border-gray-600">
                                 <div class="my-2"></div>
                                 @foreach ($users as $user)
                                 <?php 
